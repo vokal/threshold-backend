@@ -35,7 +35,7 @@ const DB_PORT = process.env.DB_PORT
 const DB_DATABASE = process.env.DB_DATABASE
 
 const DATABASE_URL = 
-  `postgres://${DB_USERNAME}:${DB_PASSWORD}` + 
+  `postgresql://${DB_USERNAME}:${DB_PASSWORD}` + 
   `@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
