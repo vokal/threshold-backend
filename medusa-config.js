@@ -39,6 +39,7 @@ const DATABASE_URL =
   `@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
+const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
 
 const plugins = [
   `medusa-fulfillment-manual`,
@@ -47,6 +48,57 @@ const plugins = [
     resolve: `@medusajs/file-local`,
     options: {
       upload_dir: "uploads",
+    },
+  },
+  {
+    resolve: `medusa-plugin-restock-notification`,
+    options: {
+      // optional options
+      trigger_delay: 100, // delay time in milliseconds
+      inventory_required: 1, // minimum restock inventory quantity
+    },
+  },
+  {
+    resolve: 'medusa-payment-stripe',
+    options: {
+      api_key: STRIPE_API_KEY,
+    }
+  },
+  {
+    resolve: `medusa-plugin-segment`,
+    options: {
+      write_key: process.env.SEGMENT_WRITE_KEY,
+    },
+  },
+  {
+    resolve: `medusa-plugin-algolia`,
+    options: {
+      applicationId: process.env.ALGOLIA_APP_ID,
+      adminApiKey: process.env.ALGOLIA_ADMIN_API_KEY,
+      settings: {
+        products: {
+          indexSettings: {
+            searchableAttributes: ["title", "description"],
+            attributesToRetrieve: [
+              "objectID",
+              "title",
+              "description",
+              "handle",
+              "thumbnail",
+              "variants",
+              "variant_sku",
+              "options",
+              "collection_title",
+              "collection_handle",
+              "images",
+            ],
+          },
+          transformer: (product) => ({ 
+            objectID: product.id, 
+            // other attributes...
+          }),
+        },
+      },
     },
   },
   {
@@ -85,7 +137,7 @@ const projectConfig = {
   admin_cors: ADMIN_CORS,
   database_extra: { ssl: { rejectUnauthorized: false } },
   // Uncomment the following lines to enable REDIS
-  // redis_url: REDIS_URL
+  redis_url: REDIS_URL
 };
 
 /** @type {import('@medusajs/medusa').ConfigModule} */

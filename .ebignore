@@ -1,0 +1,9 @@
+node_modules/
+build/
+.cache/
+/dist
+.env
+.DS_Store
+uploads
+yarn-error.log
+*.zip
