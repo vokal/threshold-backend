@@ -61,9 +61,9 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       # Create the Elastic Beanstalk application
-      # - name: Create EBS application
-      #   run: |
-      #     eb init -p python-3.8 Threshold --region us-east-2
+      - name: Create EBS application
+        run: |
+          eb init -p "Node.js 18 running on 64bit Amazon Linux 2023" Threshold --region ${{ secrets.AWS_REGION }}
 
       # Deploy to (or Create) the Elastic Beanstalk environment
       - name: Deploy development environment
