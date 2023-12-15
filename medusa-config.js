@@ -25,6 +25,8 @@ try {
 const ADMIN_CORS =
   process.env.ADMIN_CORS || "http://localhost:7000,http://localhost:7001";
 
+console.log('admin cors', ADMIN_CORS);
+
 // CORS to avoid issues when consuming Medusa from a client
 const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000";
 
@@ -133,7 +135,7 @@ const projectConfig = {
   store_cors: STORE_CORS,
   database_url: DATABASE_URL,
   admin_cors: ADMIN_CORS,
-  database_extra: { ssl: { rejectUnauthorized: false } },
+  // database_extra: { ssl: { rejectUnauthorized: false } },
   // Uncomment the following lines to enable REDIS
   redis_url: REDIS_URL
 };

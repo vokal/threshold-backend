@@ -1,0 +1,69 @@
+name: Publish Development 🐍
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches:
+      - development
+  
+  # used to trigger manually if needed
+  workflow_dispatch:
+
+env:
+  DB_USERNAME = ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD = ${{ secrets.DB_PASSWORD }}
+  DB_HOST = ${{ secrets.DB_HOST }}
+  DB_PORT = ${{ secrets.DB_PORT }}
+  DB_DATABASE = ${{ secrets.DB_DATABASE }}
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "deploy"
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    name: "[dev] Deployment"
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.16.0"
+      - run: npm run migrate
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+        # Set up Python 3.9 environment
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.9"
+
+      # Elastic Beanstalk CLI version
+      - name: Get EB CLI version
+        run: |
+          python -m pip install --upgrade pip
+          pip install awsebcli --upgrade
+          eb --version
+
+      # Configure AWS Credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Create the Elastic Beanstalk application
+      # - name: Create EBS application
+      #   run: |
+      #     eb init -p python-3.8 Threshold --region us-east-2
+
+      # Deploy to (or Create) the Elastic Beanstalk environment
+      - name: Deploy development environment
+        run: |
+          (eb use threshold-dev && eb status threshold-dev && eb deploy) || eb create threshold-dev
