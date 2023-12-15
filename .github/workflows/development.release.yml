@@ -32,6 +32,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18.16.0"
+      - run: npm install
       - run: npm run migrate
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
