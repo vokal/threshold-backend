@@ -1,6 +1,6 @@
-export declare module "@medusajs/medusa/dist/models/order" {
-  declare interface Order {
-    isDepositPaid: boolean;
-    step: string;
-  }
-}
+// export declare module "@medusajs/medusa/dist/models/order" {
+//   declare interface Order {
+//     isDepositPaid: boolean;
+//     step: string;
+//   }
+// }
