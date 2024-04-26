@@ -120,7 +120,15 @@ const plugins = [
       secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
       cache_control: process.env.S3_CACHE_CONTROL,
     },
-  }
+  },
+  {
+    resolve: `medusa-plugin-sendgrid`,
+    options: {
+      api_key: process.env.SENDGRID_API_KEY,
+      from: process.env.SENDGRID_FROM,
+      user_password_reset_template: process.env.SENDGRID_FORGOT_PASSWORD_ID,
+    },
+  },
 ];
 
 const modules = {
