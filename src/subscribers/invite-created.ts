@@ -9,8 +9,8 @@ export default async function handleInviteCreated({
   const sendGridService = container.resolve("sendgridService")
 
   sendGridService.sendEmail({
-    templateId: "send-invite",
-    from: "jose.garcia+threshold@vokal.io",
+    templateId: "d-3e6dc14ca2004c9f8984804255eddf96",
+    from: "jose.garcia+thresholddoors@vokal.io",
     to: data.user_email,
     dynamic_template_data: {
       // any data necessary for your template...
